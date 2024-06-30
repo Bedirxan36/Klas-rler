@@ -1,0 +1,2 @@
+# Kronly
+KutuParçalama
