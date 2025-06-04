@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2 Kişilik Futbol Oyunu</title>
+<style>
+  :root {
+    --bg-color: #1b2735;
+    --paddle-color: #00d2ff;
+    --paddle2-color: #ff6f91;
+    --ball-color: #f9f871;
+    --score-bg1: #0070aa99;
+    --score-bg2: #004f7a99;
+    --score-bg3: #ba4066cc;
+    --score-bg4: #7a003dcc;
+    --score-color: #ffffffcc;
+    --font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --score-shadow: rgba(0,0,0,0.5);
+    --accent-color: #00bfff;
+    --accent-dark: #0073e6;
+    --input-bg: #152a54;
+    --input-border: #0b1b3a;
+    --input-focus: #00baff;
+  }
+  body {
+    margin: 0;
+    background: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--score-color);
+    font-family: var(--font);
+    user-select: none;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+  h1 {
+    margin: 20px 0 10px 0;
+    font-weight: 700;
+    text-shadow: 0 1px 3px #0009;
+  }
+  #gameCanvas {
+    background: #0f172a;
+    border: 2px solid var(--score-color);
+    border-radius: 10px;
+    display: block;
+    margin-bottom: 12px;
+    box-shadow: 0 0 20px #00d2ff66, 0 0 25px #ff6f9166 inset;
+  }
+  /* Smaller rectangular scoreboard */
+  .scoreboard {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    width: 350px;
+  }
+  .player-score {
+    background: linear-gradient(135deg, var(--score-bg1), var(--score-bg2));
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 6px 10px var(--score-shadow);
+    width: 160px;
+    text-align: center;
+    user-select: none;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .player-score.right {
+    background: linear-gradient(135deg, var(--score-bg3), var(--score-bg4));
+  }
+  .player-score:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 20px var(--score-shadow);
+  }
+  .player-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #f0f0f0cc;
+    text-shadow: 0 1px 2px #00000080;
+    white-space: nowrap;
+  }
+  .score-value {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: #fffbf0;
+    text-shadow: 0 2px 8px #0008;
+    background: linear-gradient(90deg, #fefcea, #f1da36, #f12711);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+  }
+  /* Overlay form for player names */
+  #playerFormOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 30, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    transition: opacity 0.4s ease;
+  }
+  #playerFormOverlay form {
+    background: #152a54;
+    border-radius: 32px;
+    padding: 30px 40px;
+    box-shadow: 0 0 80px #28a4ec;
+    width: 340px;
+    max-width: 95vw;
+    box-sizing: border-box;
+  }
+  #playerFormOverlay h2 {
+    color: #eef7ff;
+    margin-bottom: 24px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1.1px;
+    text-shadow: 0 2px 6px #000c;
+    font-size: 1.9rem;
+  }
+  #playerFormOverlay label {
+    display: block;
+    color: #a8c5f9;
+    margin-bottom: 8px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  #playerFormOverlay input[type="text"] {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    border: 1px solid var(--input-border);
+    margin-bottom: 22px;
+    outline-offset: 3px;
+    outline-color: transparent;
+    background: var(--input-bg);
+    color: #eef7ff;
+    box-shadow:
+      inset 0 1px 4px #1c3a87,
+      0 3px 6px #00173f70;
+    transition: border-color 0.3s ease, outline-color 0.3s ease;
+  }
+  #playerFormOverlay input[type="text"]:focus {
+    border-color: var(--accent-color);
+    outline-color: var(--accent-color);
+    box-shadow:
+      inset 0 1px 7px #4fc3ff,
+      0 6px 10px #1080f680;
+  }
+  #playerFormOverlay button {
+    width: 100%;
+    background: linear-gradient(45deg, #00bfffcc, #0073e6cc);
+    border: none;
+    padding: 16px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    border-radius: 12px;
+    color: #eef7ff;
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 16px #0073e666;
+  }
+  #playerFormOverlay button:hover, #playerFormOverlay button:focus {
+    background: linear-gradient(45deg, #0090ff, #005bb5);
+    box-shadow: 0 6px 20px #005bb588;
+    outline: none;
+  }
+  #playerFormOverlay .error {
+    color: #ff7676;
+    margin-bottom: 16px;
+    font-weight: 600;
+    text-align: center;
+  }
+  /* VS overlay */
+  #vsOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,20,0.9);
+    z-index: 1500;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #eef7ff;
+    font-family: var(--font);
+    user-select: none;
+  }
+  #vsOverlay .vsText {
+    font-size: 9rem;
+    font-weight: 900;
+    color: #ff2751;
+    text-shadow:
+      0 0 8px #ff2751,
+      0 0 30px #ff2751,
+      0 0 50px #ff3b5d,
+      0 0 70px #ff3b5d;
+    margin-bottom: 12px;
+  }
+  #vsOverlay .countdown {
+    font-size: 14rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #ffffffdd;
+    text-shadow:
+      0 0 10px #fff,
+      0 0 40px #aaf,
+      0 0 60px #44f;
+    margin-bottom: 10px;
+    user-select: none;
+  }
+  #vsOverlay .message {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    max-width: 90vw;
+    color: #cfd6ffaa;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+<h1>2 Kişilik Futbol Oyunu</h1>
+
+<!-- Overlay form to enter player names -->
+<div id="playerFormOverlay" role="dialog" aria-modal="true">
+  <form id="playerNameForm" autocomplete="off" novalidate>
+    <h2>Oyuncu İsimlerini Giriniz</h2>
+    <label for="player1Name">Oyuncu 1 Adı (W/S):</label>
+    <input type="text" id="player1Name" name="player1Name" placeholder="Oyuncu 1" required minlength="2" maxlength="12" autofocus />
+    <label for="player2Name">Oyuncu 2 Adı (Yön Tuşları):</label>
+    <input type="text" id="player2Name" name="player2Name" placeholder="Oyuncu 2" required minlength="2" maxlength="12" />
+    <div class="error" id="formError" aria-live="polite"></div>
+    <button type="submit">Başlat</button>
+  </form>
+</div>
+
+<!-- VS overlay -->
+<div id="vsOverlay" aria-live="polite" aria-atomic="true">
+  <div class="vsText">VS</div>
+  <div class="countdown" id="countdownNumber">3</div>
+  <div class="message">3 saniye içinde başlayacaktır...</div>
+</div>
+
+<canvas id="gameCanvas" width="600" height="400" style="display:none;" aria-label="Futbol oyunu alanı"></canvas>
+
+<div class="scoreboard" style="display:none;">
+  <div class="player-score left" id="player1ScoreBox">
+    <div class="player-name" id="player1DisplayName">Oyuncu 1</div>
+    <div class="score-value" id="score1">0</div>
+  </div>
+  <div class="player-score right" id="player2ScoreBox">
+    <div class="player-name" id="player2DisplayName">Oyuncu 2</div>
+    <div class="score-value" id="score2">0</div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+
+  const playerFormOverlay = document.getElementById('playerFormOverlay');
+  const playerNameForm = document.getElementById('playerNameForm');
+  const player1NameInput = document.getElementById('player1Name');
+  const player2NameInput = document.getElementById('player2Name');
+  const formError = document.getElementById('formError');
+
+  const scoreboard = document.querySelector('.scoreboard');
+  const player1DisplayName = document.getElementById('player1DisplayName');
+  const player2DisplayName = document.getElementById('player2DisplayName');
+  const score1El = document.getElementById('score1');
+  const score2El = document.getElementById('score2');
+
+  const vsOverlay = document.getElementById('vsOverlay');
+  const countdownNumberEl = document.getElementById('countdownNumber');
+
+  const paddleWidth = 12;
+  const paddleHeight = 70;
+  const paddleSpeed = 8;
+  const ballRadius = 10;
+
+  const p1 = {
+    x: 10,
+    y: height / 2 - paddleHeight / 2,
+    width: paddleWidth,
+    height: paddleHeight,
+    color: getComputedStyle(document.documentElement).getPropertyValue('--paddle-color'),
+    dy: 0,
+  };
+
+  const p2 = {
+    x: width - paddleWidth - 10,
+    y: height / 2 - paddleHeight / 2,
+    width: paddleWidth,
+    height: paddleHeight,
+    color: getComputedStyle(document.documentElement).getPropertyValue('--paddle2-color'),
+    dy: 0,
+  };
+
+  const ball = {
+    x: width / 2,
+    y: height / 2,
+    radius: ballRadius,
+    color: getComputedStyle(document.documentElement).getPropertyValue('--ball-color'),
+    speed: 8,
+    dx: 5 * (Math.random() > 0.5 ? 1 : -1),
+    dy: 3 * (Math.random() > 0.5 ? 1 : -1),
+  };
+
+  let score1 = 0;
+  let score2 = 0;
+
+  const keys = {
+    w: false,
+    s: false,
+    up: false,
+    down: false,
+  };
+
+  let gameLoopId = null;
+
+  function drawPaddle(paddle) {
+    ctx.fillStyle = paddle.color;
+    ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+  }
+
+  function drawBall() {
+    ctx.beginPath();
+    ctx.fillStyle = ball.color;
+    ctx.shadowColor = '#ffff88';
+    ctx.shadowBlur = 12;
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.closePath();
+  }
+
+  function drawField() {
+    ctx.clearRect(0, 0, width, height);
+    ctx.strokeStyle = '#ffffff33';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([10, 15]);
+    ctx.beginPath();
+    ctx.moveTo(width / 2, 0);
+    ctx.lineTo(width / 2, height);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function movePaddle(paddle) {
+    paddle.y += paddle.dy;
+    if (paddle.y < 0) paddle.y = 0;
+    if (paddle.y + paddle.height > height) paddle.y = height - paddle.height;
+  }
+
+  function resetBall() {
+    ball.x = width / 2;
+    ball.y = height / 2;
+    ball.dx = ball.speed * (Math.random() > 0.5 ? 1 : -1);
+    ball.dy = ball.speed * (Math.random() * 2 - 1);
+  }
+
+  function updateBall() {
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+
+    if (ball.y + ball.radius > height || ball.y - ball.radius < 0) {
+      ball.dy = -ball.dy;
+    }
+
+    if (
+      ball.x - ball.radius < p1.x + p1.width &&
+      ball.y > p1.y &&
+      ball.y < p1.y + p1.height
+    ) {
+      ball.dx = Math.abs(ball.dx);
+      const collidePoint = ball.y - (p1.y + p1.height / 2);
+      ball.dy = collidePoint * 0.25;
+    }
+
+    if (
+      ball.x + ball.radius > p2.x &&
+      ball.y > p2.y &&
+      ball.y < p2.y + p2.height
+    ) {
+      ball.dx = -Math.abs(ball.dx);
+      const collidePoint = ball.y - (p2.y + p2.height / 2);
+      ball.dy = collidePoint * 0.25;
+    }
+
+    if (ball.x + ball.radius < 0) {
+      score2++;
+      score2El.textContent = score2;
+      resetBall();
+    } else if (ball.x - ball.radius > width) {
+      score1++;
+      score1El.textContent = score1;
+      resetBall();
+    }
+  }
+
+  function update() {
+    if (keys.w) p1.dy = -paddleSpeed;
+    else if (keys.s) p1.dy = paddleSpeed;
+    else p1.dy = 0;
+
+    if (keys.up) p2.dy = -paddleSpeed;
+    else if (keys.down) p2.dy = paddleSpeed;
+    else p2.dy = 0;
+
+    movePaddle(p1);
+    movePaddle(p2);
+
+    updateBall();
+  }
+
+  function draw() {
+    drawField();
+    drawPaddle(p1);
+    drawPaddle(p2);
+    drawBall();
+  }
+
+  function gameLoop() {
+    update();
+    draw();
+    gameLoopId = requestAnimationFrame(gameLoop);
+  }
+
+  window.addEventListener('keydown', e => {
+    switch (e.key.toLowerCase()) {
+      case 'w': keys.w = true; break;
+      case 's': keys.s = true; break;
+      case 'arrowup': keys.up = true; break;
+      case 'arrowdown': keys.down = true; break;
+    }
+  });
+
+  window.addEventListener('keyup', e => {
+    switch (e.key.toLowerCase()) {
+      case 'w': keys.w = false; break;
+      case 's': keys.s = false; break;
+      case 'arrowup': keys.up = false; break;
+      case 'arrowdown': keys.down = false; break;
+    }
+  });
+
+  playerNameForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const p1Name = player1NameInput.value.trim();
+    const p2Name = player2NameInput.value.trim();
+
+    if (p1Name.length < 2 || p2Name.length < 2) {
+      formError.textContent = 'Lütfen en az 2 karakterlik isimler giriniz.';
+      return;
+    }
+    formError.textContent = '';
+
+    player1DisplayName.textContent = p1Name;
+    player2DisplayName.textContent = p2Name;
+
+    playerFormOverlay.style.opacity = '0';
+
+    // Wait transition end before hiding completely and showing VS
+    playerFormOverlay.addEventListener('transitionend', () => {
+      playerFormOverlay.style.display = 'none';
+
+      let countdown = 3;
+      vsOverlay.style.display = 'flex';
+      countdownNumberEl.textContent = countdown;
+
+      const intervalId = setInterval(() => {
+        countdown--;
+        if (countdown >= 1) {
+          countdownNumberEl.textContent = countdown;
+        } else {
+          clearInterval(intervalId);
+          vsOverlay.style.display = 'none';
+          canvas.style.display = 'block';
+          scoreboard.style.display = 'flex';
+          gameLoop();
+        }
+      }, 1000);
+    }, { once: true });
+  });
+})();
+</script>
+</body>
+</html>
