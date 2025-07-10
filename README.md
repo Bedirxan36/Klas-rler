@@ -1,6 +1,6 @@
 # Innoapweb
 
-<img src="./innoapweb-main/images/logo.png" alt="Innoapweb Logo" width="50">
+<img src="./innoapweb-main/images/logo.png" alt="Innoapweb Logo" width="150">
 
 
 ## Hakkında
