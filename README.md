@@ -1,6 +1,7 @@
 # Innoapweb
 
-![Innoapweb Logo](./innoapweb-main/images/logo.png)
+<img src="./innoapweb-main/images/logo.png" alt="Innoapweb Logo" width="150">
+
 
 ## Hakkında
 
