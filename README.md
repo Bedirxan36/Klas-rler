@@ -1,6 +1,6 @@
 # Innoapweb
 
-![Innoapweb Logo](./assets/logo.png)
+![Innoapweb Logo](./innoapweb-main/images/logo.png)
 
 ## Hakkında
 
