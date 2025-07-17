@@ -14,6 +14,90 @@ html {
     scroll-behavior: smooth;
 }
 
+/* --- MEVCUT CSS KODUNUZA EKLEMELER VE GÜNCELLEMELER --- */
+
+/* Modalın içerik kutusu - İki sütunlu düzene izin vermek için genişletildi */
+.modal-content {
+    position: relative;
+    background: linear-gradient(160deg, #1f2937, #0d111c);
+    border-top: 4px solid transparent; /* JS ile dinamik renk atanacak */
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.25rem;
+    padding: 2.5rem; /* Padding mobil için ayarlanabilir */
+    width: 100%;
+    max-width: 850px; /* YENİ: Genişlik artırıldı */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    transform: translateY(30px) scale(0.98);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+/* YENİ: Modal içindeki iki sütunlu yapı */
+.modal-body-layout {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem; /* Metin ve görsel arası boşluk */
+}
+
+/* YENİ: Görselin sağda olduğu düzen (varsayılan) */
+.modal-body-layout.layout-image-right {
+    flex-direction: row;
+}
+
+/* YENİ: Görselin solda olduğu düzen */
+.modal-body-layout.layout-image-left {
+    flex-direction: row-reverse;
+}
+
+/* YENİ: Metin ve görsel alanları için stiller */
+.modal-text-content {
+    flex: 1; /* Esnek genişlik */
+    min-width: 0; /* Flexbox'ın doğru küçülmesini sağlar */
+}
+
+.modal-image-content {
+    flex-basis: 300px; /* Görsel için sabit temel genişlik */
+    flex-shrink: 0; /* Görselin küçülmesini engelle */
+}
+
+.modal-image-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem; /* Görsele yuvarlak köşe */
+    object-fit: cover;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
+
+/* YENİ: Başlık ve Paragraf için alt boşluk */
+.modal-text-content h2 {
+    margin-bottom: 1rem;
+}
+.modal-text-content p {
+    color: #cbd5e1; /* Yazı rengini biraz daha okunaklı yaptım */
+    line-height: 1.7;
+}
+
+/* YENİ: Mobil cihazlar için responsive düzenleme */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 2rem 1.5rem;
+        max-width: 90vw; /* Ekran genişliğinin %90'ını kapla */
+    }
+
+    .modal-body-layout {
+        flex-direction: column !important; /* Her zaman üst üste gelsin (!important ile ezilir) */
+        gap: 2rem;
+    }
+
+    .modal-image-content {
+        width: 100%;
+        flex-basis: auto; /* Genişliği sıfırla */
+        order: -1; /* Görseli metnin üstüne taşı */
+    }
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: #02040a;
