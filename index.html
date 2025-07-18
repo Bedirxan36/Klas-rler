@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InnoApp AYS System</title>
     
-     <link rel="icon" type="image/png" href="/innoapp_icon.png" />
+    <link rel="icon" type="image/png" href="/innoapp_icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -19,6 +19,45 @@
 
     <!-- Chart.js  -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- *** DÜZELTME: MODAL İŞLEVSELLİĞİ İÇİN EKSİK CSS KURALLARI EKLENDİ *** -->
+    <style>
+        .feature-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .feature-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .feature-modal-overlay.active .modal-content {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition: opacity 0.4s ease-out 0.1s, transform 0.4s ease-out 0.1s;
+        }
+
+        /* Modal Accent Colors */
+        .modal-accent-red { border-top-color: #ef4444 !important; }
+        .modal-accent-teal { border-top-color: #14b8a6 !important; }
+        .modal-accent-purple { border-top-color: #8b5cf6 !important; }
+        .modal-accent-blue { border-top-color: #3b82f6 !important; }
+        .modal-accent-green { border-top-color: #22c55e !important; }
+        .modal-accent-yellow { border-top-color: #f59e0b !important; }
+    </style>
 </head>
 <body class="animated-gradient-bg flex flex-col min-h-screen">
 
@@ -26,7 +65,7 @@
     <header class="bg-black/30 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
     <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
         <a href="#" data-page="home" class="flex items-center space-x-2">
-            <img src="Public/logo-removebg-preview.png" alt="InnoApp Logosu" class="w-7 h-7">
+            <img src="/public/logo-removebg-preview.png" alt="InnoApp Logosu" class="w-7 h-7">
             <span class="text-xl font-bold">InnoApp</span>
         </a>
         <div class="hidden md:flex items-center space-x-8">
@@ -51,12 +90,14 @@
             </div>
           </div>
           <!-- Menü Butonu -->
-          <button id="mobile-menu-button" class="md:hidden text-gray-300"><i data-lucide="menu" class="w-6 h-6"></i></button>
+          <button id="mobile-menu-button" class="md:hidden text-gray-300" aria-label="Mobil menüyü aç/kapat">
+              <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
           </nav>
           
           <!-- Mobil Menü -->
-          <div id="mobile-menu" class="px-4 sm:px-6 pb-4 transition-all duration-300 bg-black text-white">
-            <a href="#124" class="block py-2 nav-link" data-page="home">Ana Sayfa</a>
+          <div id="mobile-menu" class="hidden px-4 sm:px-6 pb-4 transition-all duration-300 bg-black text-white">
+            <a href="#" class="block py-2 nav-link" data-page="home">Ana Sayfa</a>
             <a href="#" class="block py-2 nav-link" data-page="features">Özellikler</a>
             <a href="#" class="block py-2 nav-link" data-page="pricing">Fiyatlandırma</a>
             <a href="#" class="block py-2 nav-link" data-page="panel">Yönetici Paneli</a>
@@ -71,15 +112,7 @@
               <a href="#" class="block py-2 mt-2 w-full text-center bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700" data-page="register">Kayıt Ol</a>
             </div>
           </div>
-          
-          <script>
-            const btn = document.getElementById('mobile-menu-button');
-            const menu = document.getElementById('mobile-menu');
-          
-            btn.addEventListener('click', () => {
-              menu.classList.toggle('menu-open');
-            });
-          </script>
+    </header>
 
     <main class="flex-grow">
         <section id="home-page" class="page relative overflow-hidden">
@@ -131,58 +164,58 @@
             <!-- YATAY PROJE KAYDIRICI -->
             <div class="container mx-auto px-4 py-20">
                 <div class="text-center mb-12">
-                    <h2 class="reveal text-4xl font-bold mb-4">Hizmetlerimiz</h2>
+                    <h2 class="reveal text-4xl font-bold mb-4">Referans Projelerimiz</h2>
                     <p class="reveal text-xl text-gray-400 max-w-2xl mx-auto" style="--delay: 100ms;">Yönetimini üstlendiğimiz ve başarıyla tamamladığımız bazı projeler.</p>
                 </div>
                 <div class="reveal slider-wrapper" style="--delay: 200ms;">
-                    <button id="prev-slide" class="slide-button">
+                    <button id="prev-slide" class="slide-button" aria-label="Önceki slayt">
                         <i data-lucide="chevron-left" class="w-6 h-6"></i>
                     </button>
                     <ul class="project-slider">
                         <li class="slider-item">
-                            <img src="Public/proje_1.png" class="w-full h-auto object-cover rounded-lg" alt="Proje 1 Resmi">
+                            <img src="/public/proje_1.png" class="w-full h-auto object-cover rounded-lg" alt="Bankacılık Sistemi projesi arayüzü">
                             <div class="p-4">
                                <h3 class="font-bold text-lg mt-2">Bankacılık Sistemi</h3>
-                               <p class="text-sm text-gray-400">Gelişmiş teknolojilerie üst düzey şifreleme güvenlik.</p>
+                               <p class="text-sm text-gray-400">Gelişmiş güvenlik katmanları ve modern teknolojilerle donatılmış finansal sistem.</p>
                             </div>
                         </li>
                         <li class="slider-item">
-                            <img src="Public/proje_2.png" class="w-full h-auto object-cover rounded-lg" alt="Proje 2 Resmi">
+                            <img src="/public/proje_2.png" class="w-full h-auto object-cover rounded-lg" alt="E-ticaret platformu ürün listeleme sayfası">
                              <div class="p-4">
-                               <h3 class="font-bold text-lg mt-2">Denemecilik Sistemi</h3>
-                               <p class="text-sm text-gray-400">Denememememe deneme deneme deneme denememe.</p>
+                               <h3 class="font-bold text-lg mt-2">E-Ticaret Platformu</h3>
+                               <p class="text-sm text-gray-400">Kullanıcı dostu arayüzü ve güvenli ödeme altyapısına sahip online mağaza.</p>
                             </div>
                         </li>
                         <li class="slider-item">
-                            <img src="Public/proje_3.png" class="w-full h-auto object-cover rounded-lg" alt="Proje 3 Resmi">
+                            <img src="/public/proje_3.png" class="w-full h-auto object-cover rounded-lg" alt="Mobil uygulama ekran görüntüleri">
                              <div class="p-4">
-                               <h3 class="font-bold text-lg mt-2">Mobil Uygulama</h3>
-                               <p class="text-sm text-gray-400">Her türlü mobıl yapılıyo deneme meme me me me mdeneme ed ed dd d d.</p>
+                               <h3 class="font-bold text-lg mt-2">Mobil Uygulama Geliştirme</h3>
+                               <p class="text-sm text-gray-400">iOS ve Android platformları için hibrit veya native mobil uygulamalar.</p>
                             </div>
                         </li>
                         <li class="slider-item">
-                            <img src="public/500x300_home_projects_image.png" class="w-full h-auto object-cover rounded-lg" alt="Proje 4 Resmi">
+                            <img src="Public/proje_4.126Z.png" class="w-full h-auto object-cover rounded-lg" alt="CRM çözümleri paneli">
                              <div class="p-4">
-                               <h3 class="font-bold text-lg mt-2">Eren'in Mallıgını İspatlama Projesi</h3>
-                               <p class="text-sm text-gray-400">test for deneme end if and try case.</p>
+                               <h3 class="font-bold text-lg mt-2">Özelleştirilmiş CRM Çözümleri</h3>
+                               <p class="text-sm text-gray-400">Müşteri ilişkileri yönetimi için özel olarak tasarlanmış platform.</p>
                             </div>
                         </li>
                          <li class="slider-item">
-                            <img src="Public/proje_5.png" class="w-full h-auto object-cover rounded-lg" alt="Proje 5 Resmi">
+                            <img src="/public/proje_5.png" class="w-full h-auto object-cover rounded-lg" alt="Yapay zeka entegrasyonu konsept görseli">
                              <div class="p-4">
                                <h3 class="font-bold text-lg mt-2">Yapay Zeka Entegrasyonu</h3>
-                               <p class="text-sm text-gray-400">Mevcut bir sisteme akıllı otomasyon ve veri analizi.</p>
+                               <p class="text-sm text-gray-400">Mevcut bir sisteme akıllı otomasyon ve veri analizi yetenekleri kazandırma.</p>
                             </div>
                         </li>
                          <li class="slider-item">
-                            <img src="Public/proje_6.png" class="w-full h-auto object-cover rounded-lg" alt="Proje 6 Resmi">
+                            <img src="/public/proje_6.png" class="w-full h-auto object-cover rounded-lg" alt="Blog ve içerik platformu ana sayfası">
                              <div class="p-4">
                                <h3 class="font-bold text-lg mt-2">Blog ve İçerik Platformu</h3>
                                <p class="text-sm text-gray-400">Yüksek trafikli, SEO uyumlu ve yönetimi kolay bir içerik yönetim sistemi.</p>
                             </div>
                         </li>
                     </ul>
-                    <button id="next-slide" class="slide-button">
+                    <button id="next-slide" class="slide-button" aria-label="Sonraki slayt">
                         <i data-lucide="chevron-right" class="w-6 h-6"></i>
                     </button>
                 </div>
@@ -194,235 +227,244 @@
         <!-- ÖZELLİKLER BÖLÜMÜ -->
         <section id="features-page" class="page">
             <div class="container mx-auto px-4 py-20">
-    <div class="text-center mb-16">
-        <h2 class="reveal text-4xl font-bold mb-4">InnoApp'in Eşsiz Özellikleri</h2>
-        <p class="reveal text-xl text-gray-400 max-w-2xl mx-auto" style="--delay: 100ms;">Yönetimi kolaylaştıran, hayatınıza değer katan modern çözümler.</p>
-    </div>
-    <div class="features-grid-final">
-        
-        <div class="feature-card-final card-final-red">
-            <div class="card-content-final">
-                <h3 class="card-title-final">Aidat & Fatura Takibi</h3>
-                <p class="card-subtitle-final">GÜVENLİ ÖDEME SİSTEMİ</p>
-                <div class="card-category-final"><span class="line"></span><span>FİNANS</span></div>
-                <p class="card-description-final">Kredi/banka kartı ile güvenli ödeme yapın, geçmiş ödemeleri ve borç durumunu anında görüntüleyin.</p>
-                <a href="#" class="card-link-final" data-modal-target="#modal-aidat">ÖZELLİĞİ İNCELE</a>
-            </div>
-        </div>
+                <div class="text-center mb-16">
+                    <h2 class="reveal text-4xl font-bold mb-4">InnoApp'in Eşsiz Özellikleri</h2>
+                    <p class="reveal text-xl text-gray-400 max-w-2xl mx-auto" style="--delay: 100ms;">Yönetimi kolaylaştıran, hayatınıza değer katan modern çözümler.</p>
+                </div>
+                <div class="features-grid-final">
+                    
+                    <div class="feature-card-final card-final-red">
+                        <div class="card-content-final">
+                            <h3 class="card-title-final">Aidat & Fatura Takibi</h3>
+                            <p class="card-subtitle-final">GÜVENLİ ÖDEME SİSTEMİ</p>
+                            <div class="card-category-final"><span class="line"></span><span>FİNANS</span></div>
+                            <p class="card-description-final">Kredi/banka kartı ile güvenli ödeme yapın, geçmiş ödemeleri ve borç durumunu anında görüntüleyin.</p>
+                            <a href="#" class="card-link-final" data-modal-target="#modal-aidat">ÖZELLİĞİ İNCELE</a>
+                        </div>
+                    </div>
 
-        <div class="feature-card-final card-final-teal">
-            <div class="card-content-final">
-                <h3 class="card-title-final">Anlık Bildirimler</h3>
-                <p class="card-subtitle-final">BİLGİ AKIŞINI KAÇIRMAYIN</p>
-                <div class="card-category-final"><span class="line"></span><span>İLETİŞİM</span></div>
-                <p class="card-description-final">Yönetimden gelen önemli duyuruları, anketleri ve toplantı notlarını asla kaçırmayın.</p>
-                <a href="#" class="card-link-final" data-modal-target="#modal-bildirim">ÖZELLİĞİ İNCELE</a>
-            </div>
-        </div>
+                    <div class="feature-card-final card-final-teal">
+                        <div class="card-content-final">
+                            <h3 class="card-title-final">Anlık Bildirimler</h3>
+                            <p class="card-subtitle-final">BİLGİ AKIŞINI KAÇIRMAYIN</p>
+                            <div class="card-category-final"><span class="line"></span><span>İLETİŞİM</span></div>
+                            <p class="card-description-final">Yönetimden gelen önemli duyuruları, anketleri ve toplantı notlarını asla kaçırmayın.</p>
+                            <a href="#" class="card-link-final" data-modal-target="#modal-bildirim">ÖZELLİĞİ İNCELE</a>
+                        </div>
+                    </div>
 
-        <div class="feature-card-final card-final-purple">
-            <div class="card-content-final">
-                <h3 class="card-title-final">Akıllı Asistan</h3>
-                <p class="card-subtitle-final">7/24 YARDIMCINIZ</p>
-                <div class="card-category-final"><span class="line"></span><span>YAPAY ZEKA</span></div>
-                <p class="card-description-final">Sorularınızı yapay zekaya sorun, anında, kişiselleştirilmiş ve doğru yanıtlar alın.</p>
-                <a href="#" class="card-link-final" data-modal-target="#modal-asistan">ÖZELLİĞİ İNCELE</a>
-            </div>
-        </div>
+                    <div class="feature-card-final card-final-purple">
+                        <div class="card-content-final">
+                            <h3 class="card-title-final">Akıllı Asistan</h3>
+                            <p class="card-subtitle-final">7/24 YARDIMCINIZ</p>
+                            <div class="card-category-final"><span class="line"></span><span>YAPAY ZEKA</span></div>
+                            <p class="card-description-final">Sorularınızı yapay zekaya sorun, anında, kişiselleştirilmiş ve doğru yanıtlar alın.</p>
+                            <a href="#" class="card-link-final" data-modal-target="#modal-asistan">ÖZELLİĞİ İNCELE</a>
+                        </div>
+                    </div>
 
-        <div class="feature-card-final card-final-blue">
-            <div class="card-content-final">
-                <h3 class="card-title-final">Şeffaf Bütçe</h3>
-                <p class="card-subtitle-final">GELİR-GİDER KONTROLÜ</p>
-                <div class="card-category-final"><span class="line"></span><span>YÖNETİM</span></div>
-                <p class="card-description-final">Apartman veya sitenizin tüm gelir ve giderlerini şeffaf bir şekilde takip edin, raporları inceleyin.</p>
-                <a href="#" class="card-link-final" data-modal-target="#modal-butce">ÖZELLİĞİ İNCELE</a>
-            </div>
-        </div>
+                    <div class="feature-card-final card-final-blue">
+                        <div class="card-content-final">
+                            <h3 class="card-title-final">Şeffaf Bütçe</h3>
+                            <p class="card-subtitle-final">GELİR-GİDER KONTROLÜ</p>
+                            <div class="card-category-final"><span class="line"></span><span>YÖNETİM</span></div>
+                            <p class="card-description-final">Apartman veya sitenizin tüm gelir ve giderlerini şeffaf bir şekilde takip edin, raporları inceleyin.</p>
+                            <a href="#" class="card-link-final" data-modal-target="#modal-butce">ÖZELLİĞİ İNCELE</a>
+                        </div>
+                    </div>
 
-        <div class="feature-card-final card-final-green">
-            <div class="card-content-final">
-                <h3 class="card-title-final">Hızlı Arıza Çözümü</h3>
-                <p class="card-subtitle-final">GÖRSEL DESTEKLİ YARDIM</p>
-                <div class="card-category-final"><span class="line"></span><span>DESTEK</span></div>
-                <p class="card-description-final">Ufak arızalar için profesyonel çağırmadan önce pratik ve görsel destekli çözüm önerileri alın.</p>
-                <a href="#" class="card-link-final" data-modal-target="#modal-ariza">ÖZELLİĞİ İNCELE</a>
-            </div>
-        </div>
+                    <div class="feature-card-final card-final-green">
+                        <div class="card-content-final">
+                            <h3 class="card-title-final">Hızlı Arıza Çözümü</h3>
+                            <p class="card-subtitle-final">GÖRSEL DESTEKLİ YARDIM</p>
+                            <div class="card-category-final"><span class="line"></span><span>DESTEK</span></div>
+                            <p class="card-description-final">Ufak arızalar için profesyonel çağırmadan önce pratik ve görsel destekli çözüm önerileri alın.</p>
+                            <a href="#" class="card-link-final" data-modal-target="#modal-ariza">ÖZELLİĞİ İNCELE</a>
+                        </div>
+                    </div>
 
-        <div class="feature-card-final card-final-yellow">
-            <div class="card-content-final">
-                <h3 class="card-title-final">Online Topluluk</h3>
-                <p class="card-subtitle-final">SOSYAL ETKİLEŞİM</p>
-                <div class="card-category-final"><span class="line"></span><span>TOPLULUK</span></div>
-                <p class="card-description-final">Komşularınızla iletişim kurun, etkinlikler düzenleyin ve sosyal bağlarınızı güçlendirin.</p>
-                <a href="#" class="card-link-final" data-modal-target="#modal-topluluk">ÖZELLİĞİ İNCELE</a>
+                    <div class="feature-card-final card-final-yellow">
+                        <div class="card-content-final">
+                            <h3 class="card-title-final">Online Topluluk</h3>
+                            <p class="card-subtitle-final">SOSYAL ETKİLEŞİM</p>
+                            <div class="card-category-final"><span class="line"></span><span>TOPLULUK</span></div>
+                            <p class="card-description-final">Komşularınızla iletişim kurun, etkinlikler düzenleyin ve sosyal bağlarınızı güçlendirin.</p>
+                            <a href="#" class="card-link-final" data-modal-target="#modal-topluluk">ÖZELLİĞİ İNCELE</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-
-
-<div id="modal-aidat" class="feature-modal-overlay">
-    <div class="modal-content">
-        <button class="modal-close-btn">&times;</button>
-        <div class="modal-body-layout layout-image-right">
-            <div class="modal-text-content">
-                <h2 class="text-3xl font-bold">Aidat & Fatura Takibi Detayları</h2>
-                <p>Bu modül ile tüm finansal işlemlerinizi kolayca yönetebilirsiniz. Güvenli ödeme altyapımız sayesinde kredi veya banka kartınızla aidat, fatura ve diğer ödemelerinizi saniyeler içinde yapabilirsiniz...</p>
-            </div>
-            <div class="modal-image-content">
-                <img src="https://via.placeholder.com/300x350/ef4444/ffffff?text=Finans" alt="Aidat Takibi Görseli">
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-bildirim" class="feature-modal-overlay">
-    <div class="modal-content">
-        <button class="modal-close-btn">&times;</button>
-        <div class="modal-body-layout layout-image-left">
-            <div class="modal-text-content">
-                <h2 class="text-3xl font-bold">Anlık Bildirimler Detayları</h2>
-                <p>Yönetimden gelen hiçbir bilgiyi kaçırmayın! Genel kurul toplantı duyuruları, önemli bilgilendirmeler, anketler veya acil durum uyarıları gibi tüm kritik bilgiler anında telefonunuza bildirim olarak gelir...</p>
-            </div>
-            <div class="modal-image-content">
-                <img src="https://via.placeholder.com/300x350/14b8a6/ffffff?text=İletişim" alt="Anlık Bildirimler Görseli">
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-asistan" class="feature-modal-overlay">
-    <div class="modal-content">
-        <button class="modal-close-btn">&times;</button>
-        <div class="modal-body-layout layout-image-right">
-            <div class="modal-text-content">
-                <h2 class="text-3xl font-bold">Akıllı Asistan Detayları</h2>
-                <p>Yapay zeka destekli akıllı asistanımız, sorularınıza 7/24 anında yanıt vermek için burada. "Ortak alan kuralları nelerdir?" veya "Havuz saat kaçta kapanıyor?" gibi sorularınızı yazarak sorun...</p>
-            </div>
-            <div class="modal-image-content">
-                <img src="https://via.placeholder.com/300x350/8b5cf6/ffffff?text=Yapay+Zeka" alt="Akıllı Asistan Görseli">
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-butce" class="feature-modal-overlay">
-    <div class="modal-content">
-        <button class="modal-close-btn">&times;</button>
-        <div class="modal-body-layout layout-image-left">
-            <div class="modal-text-content">
-                <h2 class="text-3xl font-bold">Şeffaf Bütçe Detayları</h2>
-                <p>Güven şeffaflıkla başlar. Bu özellik sayesinde apartman veya sitenizin tüm gelir ve gider kalemlerini detaylı olarak inceleyebilirsiniz. Aylık ve yıllık raporlara, faturalara ve harcama dökümlerine kolayca erişin...</p>
-            </div>
-            <div class="modal-image-content">
-                <img src="https://via.placeholder.com/300x350/3b82f6/ffffff?text=Yönetim" alt="Şeffaf Bütçe Görseli">
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-ariza" class="feature-modal-overlay">
-    <div class="modal-content">
-        <button class="modal-close-btn">&times;</button>
-        <div class="modal-body-layout layout-image-right">
-            <div class="modal-text-content">
-                <h2 class="text-3xl font-bold">Hızlı Arıza Çözümü Detayları</h2>
-                <p>Evinizdeki veya ortak alanlardaki küçük arızalar için hemen usta çağırmanıza gerek kalmayabilir. Arıza bildirim modülümüz, sorununuzu fotoğraf veya video ile kolayca yönetime iletmenizi sağlar...</p>
-            </div>
-            <div class="modal-image-content">
-                <img src="https://via.placeholder.com/300x350/22c55e/ffffff?text=Destek" alt="Hızlı Arıza Çözümü Görseli">
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-topluluk" class="feature-modal-overlay">
-    <div class="modal-content">
-        <button class="modal-close-btn">&times;</button>
-        <div class="modal-body-layout layout-image-left">
-            <div class="modal-text-content">
-                <h2 class="text-3xl font-bold">Online Topluluk Detayları</h2>
-                <p>Komşuluk ilişkilerini güçlendirin! Online topluluk forumu sayesinde komşularınızla güvenli bir platformda iletişim kurabilir, ikinci el eşyalarınızı satabilir, etkinlikler düzenleyebilirsiniz...</p>
-            </div>
-            <div class="modal-image-content">
-                <img src="https://via.placeholder.com/300x350/f59e0b/ffffff?text=Topluluk" alt="Online Topluluk Görseli">
-            </div>
-        </div>
-    </div>
-</div>
 
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const openModalLinks = document.querySelectorAll('[data-modal-target]');
-    const modals = document.querySelectorAll('.feature-modal-overlay');
-    const closeModalButtons = document.querySelectorAll('modal-close-btn');
+            <div id="modal-aidat" class="feature-modal-overlay">
+                <div class="modal-content">
+                    <button class="modal-close-btn" aria-label="Kapat">×</button>
+                    <div class="modal-body-layout layout-image-right">
+                        <div class="modal-text-content">
+                            <h2 class="text-3xl font-bold">Aidat & Fatura Takibi Detayları</h2>
+                            <p>Bu modül ile tüm finansal işlemlerinizi kolayca yönetebilirsiniz. 
+                                Güvenli ödeme altyapımız sayesinde kredi veya banka kartınızla aidat, fatura ve diğer ödemelerinizi saniyeler içinde yapabilirsiniz...</p>
+                        </div>
+                        <div class="modal-image-content">
+                            <img src="Özelikler/Aidat-Fatura_takibi.203Z.png" alt="Aidat ve fatura takibi modülü görsel temsili">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    openModalLinks.forEach(link => {
-        link.addEventListener('click', (event) => {
-            event.preventDefault();
+            <div id="modal-bildirim" class="feature-modal-overlay">
+                <div class="modal-content">
+                    <button class="modal-close-btn" aria-label="Kapat">×</button>
+                    <div class="modal-body-layout layout-image-left">
+                        <div class="modal-text-content">
+                            <h2 class="text-3xl font-bold">Anlık Bildirimler Detayları</h2>
+                            <p>Yönetimden gelen hiçbir bilgiyi kaçırmayın! Genel kurul toplantı duyuruları, önemli bilgilendirmeler, 
+                                anketler veya acil durum uyarıları gibi tüm kritik bilgiler anında telefonunuza bildirim olarak gelir...</p>
+                        </div>
+                        <div class="modal-image-content">
+                            <img src="Özelikler/anlık_bildirim.943Z.png" alt="Anlık bildirimler özelliği görsel temsili">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            const modalId = link.dataset.modalTarget;
-            const modal = document.querySelector(modalId);
-            const card = link.closest('.feature-card-final');
-            const modalContent = modal.querySelector('.modal-content');
-            
-            if (!modal || !card || !modalContent) return;
+            <div id="modal-asistan" class="feature-modal-overlay">
+                <div class="modal-content">
+                    <button class="modal-close-btn" aria-label="Kapat">×</button>
+                    <div class="modal-body-layout layout-image-right">
+                        <div class="modal-text-content">
+                            <h2 class="text-3xl font-bold">Akıllı Asistan Detayları</h2>
+                            <p>Yapay zeka destekli akıllı asistanımız, sorularınıza 7/24 anında yanıt vermek için burada. 
+                                "Ortak alan kuralları nelerdir?" veya "Havuz saat kaçta kapanıyor?" gibi sorularınızı yazarak sorun...</p>
+                        </div>
+                        <div class="modal-image-content">
+                            <img src="Özelikler/Akıllı Asistan.711Z.png" alt="Akıllı asistan görsel temsili">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            // Kartın renk sınıfını bul (örn: card-final-red)
-            const colorClass = Array.from(card.classList).find(c => c.startsWith('card-final-'));
-            
-            if (colorClass) {
-                // Rengi çıkar (örn: red)
-                const color = colorClass.replace('card-final-', '');
-                // Tüm eski renk vurgu sınıflarını temizle
-                modalContent.classList.forEach(c => {
-                    if (c.startsWith('modal-accent-')) {
-                        modalContent.classList.remove(c);
+            <div id="modal-butce" class="feature-modal-overlay">
+                <div class="modal-content">
+                    <button class="modal-close-btn" aria-label="Kapat">×</button>
+                    <div class="modal-body-layout layout-image-left">
+                        <div class="modal-text-content">
+                            <h2 class="text-3xl font-bold">Şeffaf Bütçe Detayları</h2>
+                            <p>Güven şeffaflıkla başlar. Bu özellik sayesinde apartman veya sitenizin tüm gelir ve gider kalemlerini detaylı olarak inceleyebilirsiniz. 
+                                Aylık ve yıllık raporlara, faturalara ve harcama dökümlerine kolayca erişin...</p>
+                        </div>
+                        <div class="modal-image-content">
+                            <img src="Özelikler/sefaf_butce.576Z.png" alt="Şeffaf bütçe özelliği görsel temsili">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal-ariza" class="feature-modal-overlay">
+                <div class="modal-content">
+                    <button class="modal-close-btn" aria-label="Kapat">×</button>
+                    <div class="modal-body-layout layout-image-right">
+                        <div class="modal-text-content">
+                            <h2 class="text-3xl font-bold">Hızlı Arıza Çözümü Detayları</h2>
+                            <p>Evinizdeki veya ortak alanlardaki küçük arızalar için hemen usta çağırmanıza gerek kalmayabilir. 
+                                Arıza bildirim modülümüz, sorununuzu fotoğraf veya video ile kolayca yönetime iletmenizi sağlar...</p>
+                        </div>
+                        <div class="modal-image-content">
+                            <img src="Özelikler/hızlı_arıza_cozüm.620Z.png" alt="Hızlı arıza çözümü özelliği görsel temsili">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal-topluluk" class="feature-modal-overlay">
+                <div class="modal-content">
+                    <button class="modal-close-btn" aria-label="Kapat">×</button>
+                    <div class="modal-body-layout layout-image-left">
+                        <div class="modal-text-content">
+                            <h2 class="text-3xl font-bold">Online Topluluk Detayları</h2>
+                            <p>Komşuluk ilişkilerini güçlendirin! Online topluluk forumu sayesinde komşularınızla güvenli bir platformda iletişim kurabilir, 
+                                ikinci el eşyalarınızı satabilir, etkinlikler düzenleyebilirsiniz...</p>
+                        </div>
+                        <div class="modal-image-content">
+                            <img src="Özelikler/komsuluk.059Z.png" alt="Online topluluk özelliği görsel temsili">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const openModalLinks = document.querySelectorAll('[data-modal-target]');
+                const modals = document.querySelectorAll('.feature-modal-overlay');
+                const closeModalButtons = document.querySelectorAll('.modal-close-btn');
+
+                openModalLinks.forEach(link => {
+                    link.addEventListener('click', (event) => {
+                        event.preventDefault();
+
+                        const modalId = link.dataset.modalTarget;
+                        const modal = document.querySelector(modalId);
+                        if (!modal) return;
+
+                        const card = link.closest('.feature-card-final');
+                        const modalContent = modal.querySelector('.modal-content');
+
+                        // *** DÜZELTME: Renk sınıfını daha güvenilir bir şekilde uygula ***
+                        if (card && modalContent) {
+                            // Önce mevcut renk sınıflarını temizle
+                            modalContent.classList.forEach(className => {
+                                if (className.startsWith('modal-accent-')) {
+                                    modalContent.classList.remove(className);
+                                }
+                            });
+                            
+                            // Yeni renk sınıfını bul ve ekle
+                            const colorClass = Array.from(card.classList).find(c => c.startsWith('card-final-'));
+                            if (colorClass) {
+                                const color = colorClass.replace('card-final-', '');
+                                modalContent.classList.add(`modal-accent-${color}`);
+                            }
+                        }
+
+                        modal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    });
+                });
+
+                const closeModal = (modal) => {
+                    if (!modal) return;
+                    modal.classList.remove('active');
+                    // Sadece tüm modallar kapalıysa body scroll'u etkinleştir
+                    if (document.querySelectorAll('.feature-modal-overlay.active').length === 0) {
+                        document.body.style.overflow = 'auto';
+                    }
+                };
+
+                closeModalButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        closeModal(button.closest('.feature-modal-overlay'));
+                    });
+                });
+
+                modals.forEach(modal => {
+                    modal.addEventListener('click', (event) => {
+                        // Sadece overlay'e (arka plana) tıklandığında kapat
+                        if (event.target === modal) {
+                            closeModal(modal);
+                        }
+                    });
+                });
+                
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape') {
+                        // En üstteki aktif modalı kapat
+                        const activeModal = document.querySelector('.feature-modal-overlay.active');
+                        closeModal(activeModal);
                     }
                 });
-                // Yeni renk vurgu sınıfını ekle (örn: modal-accent-red)
-                modalContent.classList.add(`modal-accent-${color}`);
-            }
-
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-    });
-
-    const closeModal = (modal) => {
-        modal.classList.remove('active');
-        if (document.querySelectorAll('.feature-modal-overlay.active').length === 0) {
-            document.body.style.overflow = 'auto';
-        }
-    };
-
-    closeModalButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            closeModal(button.closest('.feature-modal-overlay'));
-        });
-    });
-
-    modals.forEach(modal => {
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal(modal);
-            }
-        });
-    });
-    
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            const activeModals = document.querySelectorAll('.feature-modal-overlay.active');
-            if (activeModals.length > 0) {
-                closeModal(activeModals[activeModals.length - 1]);
-            }
-        }
-    });
-});
-</script>
+            });
+            </script>
         </section>
         <!-- ÖZELLİKLER BÖLÜMÜ SONU -->
 
@@ -493,7 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h3 class="text-2xl font-bold mb-2">Kurumsal</h3>
                             <p class="text-gray-400 mb-6">Yönetim şirketleri için</p>
                             <p class="text-4xl font-extrabold my-6">Teklif Alın</p>
-                            <p class="text-gray-500 font-medium period-tag">&nbsp;</p>
+                            <p class="text-gray-500 font-medium period-tag"> </p>
                         </div>
                         <ul class="space-y-4 p-8 pt-0 text-gray-300 text-left">
                             <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-3"></i>Sınırsız Daire</li>
@@ -562,7 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="panel-widget">
                             <h3 class="panel-widget-title">Aylık Finansal Durum</h3>
                             <div class="chart-container">
-                                <canvas id="financial-chart"></canvas>
+                                <canvas id="financial-chart" aria-label="Aylık Gelir ve Gider Grafiği"></canvas>
                             </div>
                         </div>
                         <!-- Son Aktiviteler -->
@@ -667,7 +709,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="space-y-4">
                                 <!-- Forum Post 1 -->
                                 <div class="forum-post">
-                                    <img src="https://placehold.co/40x40/7c3aed/ffffff?text=AY" alt="Avatar" class="w-10 h-10 rounded-full">
+                                    <img src="https://placehold.co/40x40/7c3aed/ffffff?text=AY" alt="Ayşe Yılmaz profil fotoğrafı" class="w-10 h-10 rounded-full">
                                     <div class="flex-grow">
                                         <p class="text-gray-300"><strong class="font-semibold text-white">Ayşe Yılmaz</strong> kayıp bir kedi ilanı paylaştı: "Siyah beyaz kedimiz Tekir kayboldu..."</p>
                                         <span class="text-xs text-gray-500">2 saat önce</span>
@@ -676,7 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <!-- Forum Post 2 -->
                                 <div class="forum-post">
-                                    <img src="https://placehold.co/40x40/16a34a/ffffff?text=ME" alt="Avatar" class="w-10 h-10 rounded-full">
+                                    <img src="https://placehold.co/40x40/16a34a/ffffff?text=MK" alt="Mehmet Kaya profil fotoğrafı" class="w-10 h-10 rounded-full">
                                     <div class="flex-grow">
                                         <p class="text-gray-300"><strong class="font-semibold text-white">Mehmet Kaya</strong> yeni bir konu açtı: "Eski eşyalarınızı bağışlayabileceğiniz yerler."</p>
                                         <span class="text-xs text-gray-500">5 saat önce</span>
@@ -718,7 +760,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div id="chat-history">
                                 <!-- AI Welcome Message -->
                                 <div class="chat-message ai-message">
-                                    <img src="public/40x40_ai_logo.png" alt="AI Avatar" class="chat-avatar">
+                                    <img src="/public/40x40_ai_logo.png" alt="Yapay Zeka Asistanı Avatarı" class="chat-avatar">
                                     <div class="chat-bubble">
                                         <p>Merhaba! Ben InnoApp akıllı yardım asistanınız. Size nasıl yardımcı olabilirim?</p>
                                     </div>
@@ -732,10 +774,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <input type="file" id="troubleshoot-image" class="hidden" accept="image/*">
                                     </label>
                                     <div id="image-preview-container" class="hidden">
-                                        <img id="image-preview" src="" alt="Önizleme"/>
-                                        <button id="remove-image-btn" title="Görseli Kaldır"><i data-lucide="x" class="w-4 h-4"></i></button>
+                                        <img id="image-preview" src="" alt="Yüklenen görselin önizlemesi"/>
+                                        <button id="remove-image-btn" title="Görseli Kaldır" aria-label="Görseli Kaldır"><i data-lucide="x" class="w-4 h-4"></i></button>
                                     </div>
-                                    <button id="ask-ai-button" class="support-send-btn" title="Gönder">
+                                    <button id="ask-ai-button" class="support-send-btn" title="Gönder" aria-label="Mesajı gönder">
                                         <i data-lucide="send" class="w-5 h-5"></i>
                                     </button>
                                 </div>
@@ -769,14 +811,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <i data-lucide="mail" class="w-6 h-6 text-blue-400"></i>
                                     <div>
                                         <h4 class="font-semibold">E-posta Gönderin</h4>
-                                        <a href="mailto:destek@innoapp.com" class="text-blue-400 hover:underline">inno@innoap.net</a>
+                                        <a href="mailto:destek@innoapp.com" class="text-blue-400 hover:underline">destek@innoapp.com</a>
                                     </div>
                                  </li>
                                   <li class="contact-channel-item">
                                     <i data-lucide="phone" class="w-6 h-6 text-green-400"></i>
                                     <div>
                                         <h4 class="font-semibold">Bizi Arayın</h4>
-                                        <a href="tel:+905551234567" class="text-green-400 hover:underline">0555 555 55 55</a>
+                                        <a href="tel:+905555555555" class="text-green-400 hover:underline">0555 555 55 55</a>
                                     </div>
                                  </li>
                              </ul>
@@ -798,7 +840,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                  <div class="grid md:grid-cols-2 gap-12 items-center my-20">
                      <div class="reveal" style="--delay: 200ms;">
-                         <img src="public/innoapp_ekip_logo_eski.png" alt="InnoApp Ekibi" class="rounded-2xl shadow-2xl shadow-blue-500/20">
+                         <img src="/public/innoapp_ekip_logo_eski.png" alt="InnoApp ekibi bir toplantıda" class="rounded-2xl shadow-2xl shadow-blue-500/20">
                      </div>
                      <div class="reveal" style="--delay: 300ms;">
                         <h3 class="text-3xl font-bold mb-4">Hikayemiz</h3>
@@ -838,7 +880,7 @@ document.addEventListener('DOMContentLoaded', () => {
                              <div>
                                  <h3 class="text-xl font-bold">E-posta</h3>
                                  <p class="text-gray-400 mb-2">Genel sorularınız için.</p>
-                                 <a href="mailto:destek@innoapp.com" class="text-blue-400 font-semibold hover:underline">inno@innoap.net</a>
+                                 <a href="mailto:destek@innoapp.com" class="text-blue-400 font-semibold hover:underline">destek@innoapp.com</a>
                              </div>
                          </div>
                          <div class="contact-info-card reveal" style="--delay: 300ms;">
@@ -846,15 +888,15 @@ document.addEventListener('DOMContentLoaded', () => {
                              <div>
                                  <h3 class="text-xl font-bold">Telefon</h3>
                                  <p class="text-gray-400 mb-2">Hafta içi 09:00-18:00 arası.</p>
-                                 <a href="tel:+905551234567" class="text-green-400 font-semibold hover:underline">0555 555 55 55</a>
+                                 <a href="tel:+905555555555" class="text-green-400 font-semibold hover:underline">0555 555 55 55</a>
                              </div>
                          </div>
                          <div class="contact-info-card reveal" style="--delay: 400ms;">
                             <div class="contact-info-icon bg-purple-500/20 text-purple-400"><i data-lucide="map-pin"></i></div>
                              <div>
                                  <h3 class="text-xl font-bold">Adres</h3>
-                                 <p class="text-gray-400">Ankara Çankaya, Umitköy</p>
-                                 <p class="text-gray-500">Çankaya, Ankara</p>
+                                 <p class="text-gray-400">Ümitköy, Çankaya</p>
+                                 <p class="text-gray-500">Ankara, Türkiye</p>
                              </div>
                          </div>
                      </div>
@@ -914,7 +956,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </p>
                         </div>
                          <div class="hidden md:flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-800 p-8">
-                            <img src="Public/log_in.png" alt="" class="rounded-xl shadow-lg">
+                            <img src="/public/log_in.png" alt="Giriş sayfasını temsil eden illüstrasyon" class="rounded-xl shadow-lg">
                         </div>
                     </div>
                 </div>
@@ -949,7 +991,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </p>
                         </div>
                         <div class="hidden md:flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-800 p-8">
-                            <img src="Public/sıgn_up.png" alt="" class="rounded-xl shadow-lg">
+                            <img src="/public/sign_up.png" alt="Kayıt sayfasını temsil eden illüstrasyon" class="rounded-xl shadow-lg">
                         </div>
                     </div>
                 </div>
@@ -1163,7 +1205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <!-- Sütun 1: Logo ve Açıklama -->
                 <div class="col-span-1 md:col-span-2 lg:col-span-1">
                     <a href="#" data-page="home" class="flex items-center space-x-2 mb-4">
-                        <img src="/innoapp_icon.png" alt="InnoApp Logosu" class="w-7 h-7">
+                        <img src="Public/logo-removebg-preview.png" alt="InnoApp Logosu" class="w-7 h-7">
                         <span class="text-xl font-bold">InnoApp</span>
                     </a>
                     <p class="text-gray-400 text-sm">Apartman yönetimini dijitale taşıyan akıllı çözüm.</p>
@@ -1173,7 +1215,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3 class="font-semibold mb-4 text-white">Şirket</h3>
                     <ul class="space-y-2 text-gray-400">
                         <li class="hover:text-white transition-colors"><a href="#" data-page="about">Biz Kimiz</a></li>
-                        <li class="hover:text-white transition-colors"><a href="#">Kariyer</a></li>
                         <li class="hover:text-white transition-colors"><a href="#" data-page="contact">İletişim</a></li>
                     </ul>
                 </div>
@@ -1191,23 +1232,23 @@ document.addEventListener('DOMContentLoaded', () => {
                      <h3 class="font-semibold mb-4 text-white">Bültenimize Abone Olun</h3>
                      <p class="text-gray-400 text-sm mb-4">Sektördeki yeniliklerden ve güncellemelerden ilk siz haberdar olun.</p>
                      <form class="flex">
-                         <input type="email" placeholder="E-posta adresiniz" class="w-full rounded-l-md border-gray-700 bg-gray-800 text-white px-3 py-2 focus:border-blue-500 focus:ring-0 outline-none">
-                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 rounded-r-md"><i data-lucide="send"></i></button>
+                         <input type="email" placeholder="E-posta adresiniz" aria-label="E-posta adresiniz" class="w-full rounded-l-md border-gray-700 bg-gray-800 text-white px-3 py-2 focus:border-blue-500 focus:ring-0 outline-none">
+                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 rounded-r-md" aria-label="Abone ol"><i data-lucide="send"></i></button>
                      </form>
                 </div>
             </div>
             <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center">
-                <p class="text-gray-500 text-sm">&copy; 2025 InnoApp. Tüm Hakları Saklıdır.</p>
+                <p class="text-gray-500 text-sm">© 2025 InnoApp. Tüm Hakları Saklıdır.</p>
                 <div class="flex space-x-4 mt-4 sm:mt-0">
-                    <a href="#" class="text-gray-500 hover:text-white transition-colors"><i data-lucide="twitter"></i></a>
-                    <a href="#" class="text-gray-500 hover:text-white transition-colors"><i data-lucide="github"></i></a>
-                    <a href="#" class="text-gray-500 hover:text-white transition-colors"><i data-lucide="linkedin"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-white transition-colors" aria-label="Twitter profilimiz"><i data-lucide="twitter"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-white transition-colors" aria-label="GitHub profilimiz"><i data-lucide="github"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-white transition-colors" aria-label="LinkedIn profilimiz"><i data-lucide="linkedin"></i></a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <button id="scroll-to-top" title="Yukarı Çık" class="btn fixed bottom-8 right-8 z-50 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500">
+    <button id="scroll-to-top" title="Yukarı Çık" aria-label="Sayfanın başına dön" class="btn fixed bottom-8 right-8 z-50 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500">
       <i data-lucide="arrow-up" class="w-6 h-6"></i>
     </button>
     
