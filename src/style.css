@@ -12,9 +12,41 @@
   initial-value: 0%;
 }
 
-/* ==========================================================================
-   1. TEMEL VE GENEL STİLLER
-   ========================================================================== */
+.feature-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .feature-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .feature-modal-overlay.active .modal-content {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition: opacity 0.4s ease-out 0.1s, transform 0.4s ease-out 0.1s;
+        }
+
+        /* Modal Accent Colors */
+        .modal-accent-red { border-top-color: #ef4444 !important; }
+        .modal-accent-teal { border-top-color: #14b8a6 !important; }
+        .modal-accent-purple { border-top-color: #8b5cf6 !important; }
+        .modal-accent-blue { border-top-color: #3b82f6 !important; }
+        .modal-accent-green { border-top-color: #22c55e !important; }
+        .modal-accent-yellow { border-top-color: #f59e0b !important; }
 
 html {
     scroll-behavior: smooth;
